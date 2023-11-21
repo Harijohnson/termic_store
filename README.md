@@ -1,1 +1,0 @@
-# termic_store
