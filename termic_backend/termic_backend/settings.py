@@ -41,10 +41,16 @@ INSTALLED_APPS = [
     #new install below 
     'base.apps.BaseConfig',
     'rest_framework',
+    "corsheaders",
 
 ]
 
 MIDDLEWARE = [
+     # new install 
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
+
+    #default imports
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -52,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+   
 ]
 
 ROOT_URLCONF = 'termic_backend.urls'
@@ -126,3 +133,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+# allow the react ot access the urls in django
+CORS_ALLOW_ALL_ORIGINS = True
