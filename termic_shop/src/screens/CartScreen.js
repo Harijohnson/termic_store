@@ -7,16 +7,29 @@ import { addToCart } from '../actions/cartActions'
 
 
 function CartScreen() {
-  const productId = useParams();
   const location = useLocation();
-  const qty  = location.search ? location.search.split('=') : 1
-  console.log(qty)
+  // console.log(location);
+  // const searchParams = new URLSearchParams(location.search);
+  // console.log(searchParams.toString());
+  const pathnameArray = location.pathname.split('/');
+  const productId = pathnameArray[pathnameArray.length - 1];
+  // const productId = searchParams.get('id'); 
+  console.log(productId)
+  const qty  = location.search ? Number(location.search.split('=')[1]) : 1
+  const dispatch = useDispatch()
+  
 
 
 
 
 
 
+
+  useEffect(()=>{
+    if(productId){
+      dispatch(addToCart(productId,qty))
+    }
+  },[dispatch,productId,qty])
 
 
   return (
