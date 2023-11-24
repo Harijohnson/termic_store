@@ -23,10 +23,10 @@ export const listProducts = () => async (dispatch) => {
     }catch(error){
         dispatch({
             type:PRODUCT_LIST_FAIL,
-            payload:error.response && error.response.data.message
+            payload:error.response && error.response.data.detail
             ?
-            error.response.data.message:
-            error.message,
+            error.response.data.detail:
+            error.detail,
         })
     }
 }
@@ -46,10 +46,10 @@ export const listProductDetails = (id) => async (dispatch) => {
     }catch(error){
         dispatch({
             type:PRODUCT_DETAILS_FAIL,
-            payload:error.response && error.response.data.message
+            payload:error.response && error.response.data.detail
             ?
-            error.response.data.message:
-            error.message,
+            error.response.data.detail:
+            error.detail,
         })
     }
 }
