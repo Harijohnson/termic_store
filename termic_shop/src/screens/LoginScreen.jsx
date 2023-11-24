@@ -28,7 +28,6 @@ function LoginScreen( ) {
     },[navigate,userInfo,redirect])
 
     const submitHandeler = (e) => {
-        console.log(password)
         e.preventDefault()
         dispatch(login(email,password))
     }
