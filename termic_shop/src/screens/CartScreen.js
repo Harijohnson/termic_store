@@ -1,5 +1,5 @@
 import React,{useEffect} from 'react'
-import { Link,useParams,useLocation,useNavigate } from 'react-router-dom'
+import { Link,useLocation,useNavigate } from 'react-router-dom'
 import { useDispatch,useSelector } from 'react-redux'
 import { Row,Col,ListGroup,Image,Form,Button,Card } from 'react-bootstrap'
 import  Message  from '../components/Message'
@@ -8,26 +8,13 @@ import { addToCart,removeFromCart } from '../actions/cartActions'
 
 function CartScreen( ) {
   const location = useLocation();
-  // console.log(location);
-  // const searchParams = new URLSearchParams(location.search);
-  // console.log(searchParams.toString());
   const pathnameArray = location.pathname.split('/');
   const productId = pathnameArray[pathnameArray.length - 1];
-  // const productId = searchParams.get('id'); 
-  // console.log(productId)
   const qty  = location.search ? Number(location.search.split('=')[1]) : 1
   const dispatch = useDispatch()
-  
-
   const cart = useSelector(state => state.cart)
   const { cartItems } =cart
-
-
   const navigate = useNavigate();
-  // console.log(cartItems)
-
-
-
 
   useEffect(()=>{
     if(productId){
@@ -35,24 +22,13 @@ function CartScreen( ) {
     }
   },[dispatch,productId,qty])
 
-
-
-
   const removeFromCartHandeler = (id) => {
     dispatch(removeFromCart(id))
   }
 
-
-
-
-
   const checkOutHandeler = () => {
     navigate('/login?redirect=shipping')
   }
-
-
-
-
 
   return (
     <Row>
@@ -81,9 +57,7 @@ function CartScreen( ) {
                       <Form.Control  
                               as='select'
                               value={item.qty}
-                              onChange={(e) => dispatch(addToCart(item.product,Number(e.target.value)))}
-
-                              >
+                              onChange={(e) => dispatch(addToCart(item.product,Number(e.target.value)))} >
                                 {
                                   [...Array(item.countInStock).keys()].map((x) => (
                                     <option value={ x + 1 }  key={ x + 1 } >
@@ -106,10 +80,7 @@ function CartScreen( ) {
                 </ListGroup.Item>
               ))}
           </ListGroup>)}
-        
-
       </Col>
-
 
       <Col md={4}>
         <Card >
