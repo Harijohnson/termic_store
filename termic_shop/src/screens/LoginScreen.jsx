@@ -19,7 +19,7 @@ function LoginScreen( ) {
     const redirect =  location.search ? location.search.split('=')[1]  : '/'
 
     const userLogin = useSelector(state => state.userLogin)
-    const { error,loding,userInfo } = userLogin
+    const { error,loading,userInfo } = userLogin
 
     useEffect (() => {
         if (userInfo){
@@ -37,6 +37,8 @@ function LoginScreen( ) {
     <FormContainer>
       <h1>Sign In</h1>
 
+      {error && <Message variant='danger'>{error}</Message>}
+        {loading && <Loader />}
       <Form onSubmit={ submitHandeler }>
         <Form.Group controlId='email'>
             <Form.Label>
