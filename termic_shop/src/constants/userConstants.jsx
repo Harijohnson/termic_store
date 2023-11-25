@@ -10,3 +10,64 @@ export const USER_LOGOUT = 'USER_LOGOUT'
 export const USER_REGISTER_REQUEST = 'USER_REGISTER_REQUEST'
 export const USER_REGISTER_SUCCESS = 'USER_REGISTER_SUCCESS'
 export const USER_REGISTER_FAILE = 'USER_REGISTER_FAILE'
+
+
+
+export const USER_DETAILS_REQUEST = 'USER_DETAILS_REQUEST'
+export const USER_DETAILS_SUCCESS = 'USER_DETAILS_SUCCESS'
+export const USER_DETAILS_FAILE = 'USER_DETAILS_FAILE'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
