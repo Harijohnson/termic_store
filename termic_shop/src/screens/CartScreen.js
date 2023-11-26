@@ -22,12 +22,12 @@ function CartScreen( ) {
     }
   },[dispatch,productId,qty])
 
-  const removeFromCartHandeler = (id) => {
-    dispatch(removeFromCart(id))
-  }
+  const removeFromCartHandler = (id) => {
+    dispatch(removeFromCart(id));
+  };
 
   const checkOutHandeler = () => {
-    navigate('/login?redirect=shipping')
+    navigate('/shipping')
   }
 
   return (
@@ -41,9 +41,9 @@ function CartScreen( ) {
           ) : 
           (
           <ListGroup variant = 'flush'>
-              {cartItems.map(item => (
-                <ListGroup.Item key={item.productId}>
-                  <Row>
+              {cartItems.map((item) => (
+                  <ListGroup.Item key={item.productId}>
+                  <Row key={item.productId}>
                     <Col md={2}>
                       <Image src={item.image} alt={item.name} fluid rounded/>
                     </Col>
@@ -72,7 +72,7 @@ function CartScreen( ) {
                       <Button
                       type='button'
                       variant='light'
-                      onClick={() =>removeFromCartHandeler(item.product) }>
+                      onClick={() =>removeFromCartHandler(item.product) }>
                         <i className='fas fa-trash'></i>
                       </Button>
                     </Col>
