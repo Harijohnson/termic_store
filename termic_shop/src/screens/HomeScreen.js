@@ -22,14 +22,17 @@ function HomeScreen() {
       {
         loading ? <Loader /> 
         : error ? <Message  variant='danger'>{error}</Message> 
-        :
+        : products ? (
           <Row>
-            {products.map(product => (
+            {products.map((product) => (
                 <Col key={ product._id} sm={12} md={6} lg={4} xl={3}>
                     <Product product={product}  />
                 </Col>
             ))}
         </Row>
+        ):(
+          <Message variant="info">No products available</Message>
+        )
     }
       
     </div>

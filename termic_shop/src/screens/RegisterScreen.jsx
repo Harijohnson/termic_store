@@ -21,7 +21,7 @@ function RegisterScreen() {
     const navigate = useNavigate();
     const redirect =  location.search ? location.search.split('=')[1]  : '/'
 
-    const userRegister = useSelector(state => state.userRegister)
+    const userRegister = useSelector((state) => state.userRegister)
     const { error,loading,userInfo } = userRegister
 
     useEffect (() => {
@@ -44,7 +44,7 @@ function RegisterScreen() {
     <FormContainer>
       <h1>Sign In</h1>
         {message && <Message variant='danger'>{message}</Message>}
-      {error && <Message variant='danger'>{error}</Message>}
+        {error && <Message variant='danger'>{error}</Message>}
         {loading && <Loader />}
       <Form onSubmit={ submitHandeler }>
       <Form.Group controlId='name'>

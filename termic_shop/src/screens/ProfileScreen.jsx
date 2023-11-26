@@ -8,8 +8,11 @@ import { getUserDetails,updateUserProfile } from '../actions/userActions'
 import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
 
 function ProfileScreen() {
-    const [name,setName] = useState('')
-    const [email,setEmail] = useState('')
+    const userDetails = useSelector((state) => state.userDetails)
+    const { error,loading,user } = userDetails
+
+    const [name,setName] = useState(user.name)
+    const [email,setEmail] = useState(user.email)
     const [password,setPassword] = useState('')
     const [confirmPassword,setConfirmPassword] = useState('')
     const [message,setMessage] = useState('')
@@ -19,21 +22,19 @@ function ProfileScreen() {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const userDetails = useSelector(state => state.userDetails)
-    const { error,loading,user } = userDetails
+   
 
-
-    const userLogin = useSelector(state => state.userLogin)
+    const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin
 
-    const userUpdateProfile = useSelector(state => state.userUpdateProfile)
+    const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
     const { success } = userUpdateProfile
 
     useEffect (() => {
         if (!userInfo){
             navigate('/login')
         }else{
-            if (!user || user.name || success){
+            if (!user || !user.name || success){
                 dispatch({type:
                 USER_UPDATE_PROFILE_RESET
                 })
