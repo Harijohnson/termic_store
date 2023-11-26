@@ -30,6 +30,10 @@ function CartScreen( ) {
     navigate('/shipping')
   }
 
+  // const updateQuantityHandler = (productId, quantity) => {
+  //   dispatch(updateCartItem(productId, quantity));
+  // }
+
   return (
     <Row>
       <Col md={8}>
@@ -40,6 +44,7 @@ function CartScreen( ) {
             </Message>
           ) : 
           (
+            
           <ListGroup variant = 'flush'>
               {cartItems.map((item) => (
                   <ListGroup.Item key={item.productId}>
@@ -58,6 +63,7 @@ function CartScreen( ) {
                               as='select'
                               value={item.qty}
                               onChange={(e) => dispatch(addToCart(item.product,Number(e.target.value)))} >
+                              {/* onChange={(e) => updateQuantityHandler(item.product, Number(e.target.value))}> */}
                                 {
                                   [...Array(item.countInStock).keys()].map((x) => (
                                     <option value={ x + 1 }  key={ x + 1 } >
