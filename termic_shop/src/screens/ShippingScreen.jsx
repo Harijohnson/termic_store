@@ -6,7 +6,7 @@ import  Message   from '../components/Message'
 import { useDispatch,useSelector } from 'react-redux'
 import { saveShippingAddress } from '../actions/cartActions'
 import  FormContainer   from '../components/FormContainer'
-
+import CheckoutSteps from '../components/CheckoutSteps'
 
 function ShippingScreen() {
   const navigate = useNavigate();
@@ -30,6 +30,7 @@ function ShippingScreen() {
   }
   return (
     <FormContainer>
+      <CheckoutSteps step1 step2 step3 step4/>
       <h1>Shipping</h1>
       <Form onSubmit={submitHandeler}>
 
