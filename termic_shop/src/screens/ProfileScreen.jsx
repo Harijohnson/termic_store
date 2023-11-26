@@ -1,5 +1,5 @@
-import React,{ useEffect,useReducer,useState } from 'react'
-import { Link, redirect,useLocation,useNavigate } from 'react-router-dom'
+import React,{ useEffect,useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Form,Button,Col,Row } from 'react-bootstrap'
 import  Loader   from '../components/Loader'
 import  Message   from '../components/Message'
@@ -19,7 +19,6 @@ function ProfileScreen() {
     
     const dispatch = useDispatch()
 
-    const location = useLocation();
     const navigate = useNavigate();
 
    

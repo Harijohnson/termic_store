@@ -1,8 +1,6 @@
-import React,{ useEffect,useState } from 'react'
-import { Link, redirect,useLocation,useNavigate } from 'react-router-dom'
-import { Form,Button,Col,Row } from 'react-bootstrap'
-import  Loader   from '../components/Loader'
-import  Message   from '../components/Message'
+import React,{ useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Form,Button } from 'react-bootstrap'
 import { useDispatch,useSelector } from 'react-redux'
 import { saveShippingAddress } from '../actions/cartActions'
 import  FormContainer   from '../components/FormContainer'
@@ -10,8 +8,6 @@ import CheckoutSteps from '../components/CheckoutSteps'
 
 function ShippingScreen() {
   const navigate = useNavigate();
-  const location = useLocation();
-
   const cart = useSelector((state) => state.cart )
   const {shippingAddress} = cart
 
@@ -30,7 +26,7 @@ function ShippingScreen() {
   }
   return (
     <FormContainer>
-      <CheckoutSteps step1 step2 step3 step4/>
+      <CheckoutSteps step1 step2 />
       <h1>Shipping</h1>
       <Form onSubmit={submitHandeler}>
 
