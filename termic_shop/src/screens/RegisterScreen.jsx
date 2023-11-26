@@ -1,5 +1,5 @@
 import React,{ useEffect,useState } from 'react'
-import { Link, redirect,useLocation,useNavigate } from 'react-router-dom'
+import { Link, useLocation,useNavigate } from 'react-router-dom'
 import { Form,Button,Col,Row } from 'react-bootstrap'
 import  Loader   from '../components/Loader'
 import  Message   from '../components/Message'
