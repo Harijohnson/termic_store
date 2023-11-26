@@ -6,8 +6,7 @@ import { Link } from 'react-router-dom'
 import CheckoutSteps from '../components/CheckoutSteps'
 import Message from '../components/Message'
 import { createOrder } from '../actions/orderActions'
-
-
+import { ORDER_CREATE_RESET } from '../constants/OrderConstant'
 
 
 
@@ -28,22 +27,25 @@ function PlaceOrderScreen() {
     
     cart.totalPrice = (Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice)).toFixed(2)
     
-    // if(!cart.paymentMethod){
-    //     navigate('/payment')
-    // }
-
-
     if (!cart.paymentMethod) {
         navigate('/payment');
     }
+    
     useEffect (()=>{
+
         if(success){
             navigate(`/order/${order._id}`)
+            dispatch({
+                type:ORDER_CREATE_RESET
+            })
         }
     },[success,navigate,order])
 
     const placeOrder = () =>{
         console.log(cart)
+        if (!cart.paymentMethod) {
+            navigate('/payment');
+        }
         
         dispatch(createOrder({
             orderItems:cart.cartItems,

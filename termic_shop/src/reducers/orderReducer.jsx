@@ -1,7 +1,8 @@
 import { 
     ORDER_CREATE_REQUEST,
     ORDER_CREATE_SUCCESS,
-    ORDER_CREATE_FAILE } from '../constants/OrderConstant'
+    ORDER_CREATE_FAILE,
+    ORDER_CREATE_RESET } from '../constants/OrderConstant'
 
 
 
@@ -22,6 +23,8 @@ export const orderCreateReducer = (state={},action) => {
                 loading:false,
                 error:action.payload,
             }
+        case ORDER_CREATE_RESET:
+            return {  }       // RESETING THE CART AFTER SUCCESSFULL SUBMITION OF ORDER
         default:
             return state
     }
