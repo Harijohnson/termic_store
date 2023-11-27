@@ -34,7 +34,10 @@ https://github.com/divanov11/proshop_django
 
 
 
+git clone 
 
+
+clone this repo create branch and add commits 
 
 
 
