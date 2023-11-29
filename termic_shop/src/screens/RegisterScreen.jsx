@@ -26,7 +26,8 @@ function RegisterScreen() {
 
     useEffect (() => {
         if (userInfo){
-            navigate(redirect)
+            navigate('/')
+            // navigate(redirect)
         }
     },[navigate,userInfo,redirect])
 
