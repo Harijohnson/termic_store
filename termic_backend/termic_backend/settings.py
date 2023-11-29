@@ -11,14 +11,14 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-import os
+import os #import the os for locate the static and templates for  project 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-BASE_DIR2 = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR2 = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) # change directory to main folders
 
 
-STATIC_DIR = os.path.join(BASE_DIR2,'static')
+STATIC_DIR = os.path.join(BASE_DIR2,'static'). # locate the static file like image and js and css file and images for project
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -34,7 +34,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    'django.contrib.admin',  
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -42,13 +42,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     #new install below 
-    'base.apps.BaseConfig',
+    'base.apps.BaseConfig',    # this is for config the backends in django
     'rest_framework',
     "corsheaders",
 
 ]
 
-
+# this is for authenticate the user from jwtAuthentcation
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -60,7 +60,7 @@ REST_FRAMEWORK = {
 
 from datetime import timedelta
 ...
-
+# this for session management in here single user can able to login for 30 days this is fromjwtbfreamwork 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
@@ -119,8 +119,11 @@ MIDDLEWARE = [
    
 ]
 
+#in here urls for set the urls for base config
 ROOT_URLCONF = 'termic_backend.urls'
 
+
+#this is for templates like htlm file needs to be declared in here
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -149,6 +152,10 @@ WSGI_APPLICATION = 'termic_backend.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+
+# this configured for mysql database db bd named termic 
+# create database termic.     and use this 
 
 DATABASES = {
     'default': {
@@ -195,15 +202,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
-MEDIA_URL = 'images/'
+STATIC_URL = 'static/'. # this is a folder to stores  static file for project inetilation
+MEDIA_URL = 'images/'. # this folder stores images for frontend to render
 
 STATICFILES_DIR =[
-    STATIC_DIR,
+    STATIC_DIR,  # inherited from static files
 ]
 
 
-MEDIA_ROOT = os.path.join(BASE_DIR2, 'base/static/images')
+MEDIA_ROOT = os.path.join(BASE_DIR2, 'base/static/images'). # this for set the images
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -213,7 +220,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # allow the react ot access the urls in django
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True. 
 
 
 
