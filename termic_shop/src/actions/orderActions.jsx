@@ -82,7 +82,7 @@ export  const  getOrderDetails= ( id ) => async (dispatch,getState) => {
 
     const {
         userLogin : { userInfo },
-    }=getState()
+    } = getState()
 
 
 
@@ -94,6 +94,7 @@ export  const  getOrderDetails= ( id ) => async (dispatch,getState) => {
 
     }
     const {data} = await axios.get(
+        // console.log('the product id is :',id)
         `/api/orders/${id}/`,
         config
         )
