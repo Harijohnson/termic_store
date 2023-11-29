@@ -1,4 +1,4 @@
-oo# termic_store
+# termic_store
 links
 http://127.0.0.1:8000/api/users/login
 
@@ -34,7 +34,7 @@ https://github.com/divanov11/proshop_django
 
 
 
-git clone 
+'''git clone 
 
 
 clone this repo create branch and add commits 
