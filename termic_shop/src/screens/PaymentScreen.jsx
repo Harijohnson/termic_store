@@ -13,7 +13,7 @@ function PaymentScreen() {
 
     const dispatch = useDispatch()
 
-    const [paymentMethod,setPaymentMethod] = useState('Google Pay')
+    const [paymentMethod,setPaymentMethod] = useState('PayPal')
     
     if(!shippingAddress.address){
         navigate('/shipping')
@@ -39,8 +39,8 @@ function PaymentScreen() {
             <Col>
                 <Form.Check
                 type='radio'
-                label='Google Pay or Card'
-                id='G-pay'
+                label='PayPal'
+                id='paypal'
                 name='paymentMethod'
                 checked
                 onChange={(e) => setPaymentMethod(e.target.value)}>

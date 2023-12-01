@@ -38,7 +38,7 @@ function OrderScreen(  {match} ) {
     const addPayPalScript = () =>{
         const script =document.createElement('script')
         script.type = 'text/javascript'
-        script.src = 'https://www.paypal.com/sdk/js?client-id=AazML7DItushjgZYVB1vO-ZbyHPYlUOymuhxCtQS5bOUPFxPT0jjdu7cRKj9j7dZXQUqLbVr-ZUGtmcd&components=buttons'
+        script.src = 'https://www.paypal.com/sdk/js?client-id=AazML7DItushjgZYVB1vO-ZbyHPYlUOymuhxCtQS5bOUPFxPT0jjdu7cRKj9j7dZXQUqLbVr-ZUGtmcdz&components=buttons'
         script.async=true
         script.onload = () =>{
             setSdkReady(true)
@@ -52,7 +52,9 @@ function OrderScreen(  {match} ) {
         const fetchOrderDetails = async () => {
             try {
                 if (!order || successPay || order._id !== Number(orderId)) {
-                dispatch({type:ORDER_PAY_RESET})
+                dispatch({
+                    type:ORDER_PAY_RESET
+                })
                  dispatch(getOrderDetails(Number(orderId)));
                 }
                 else if(!order.isPaid){
@@ -70,7 +72,7 @@ function OrderScreen(  {match} ) {
         };
     
         fetchOrderDetails();
-    }, [order, orderId, dispatch,successPay]);
+    }, [order, orderId, dispatch,successPay,sdkReady]);
 
 
 
