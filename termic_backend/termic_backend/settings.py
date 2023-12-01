@@ -18,7 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR2 = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) # change directory to main folders
 
 
-STATIC_DIR = os.path.join(BASE_DIR2,'static'). # locate the static file like image and js and css file and images for project
+STATIC_DIR = os.path.join(BASE_DIR2,'static') # locate the static file like image and js and css file and images for project
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -60,7 +60,7 @@ REST_FRAMEWORK = {
 
 from datetime import timedelta
 ...
-# this for session management in here single user can able to login for 30 days this is fromjwtbfreamwork 
+# this for session management in here single user can able to login for 30 days this is fromj wtbfreamwork 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
@@ -202,15 +202,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'. # this is a folder to stores  static file for project inetilation
-MEDIA_URL = 'images/'. # this folder stores images for frontend to render
+STATIC_URL = 'static/' # this is a folder to stores  static file for project inetilation
+MEDIA_URL = 'images/' # this folder stores images for frontend to render
 
 STATICFILES_DIR =[
     STATIC_DIR,  # inherited from static files
 ]
 
 
-MEDIA_ROOT = os.path.join(BASE_DIR2, 'base/static/images'). # this for set the images
+MEDIA_ROOT = os.path.join(BASE_DIR2, 'base/static/images') # this for set the images
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -220,7 +220,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # allow the react ot access the urls in django
-CORS_ALLOW_ALL_ORIGINS = True. 
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 

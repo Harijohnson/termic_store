@@ -77,7 +77,7 @@ def addOrderItems(request):
 @permission_classes([IsAuthenticated])
 def getOrderById(request, pk):
     user = request.user
-    print(user)
+    # print(user)
 
     try:
         order = Order.objects.get( _id=pk )
