@@ -56,7 +56,7 @@ class OrderSerializer(serializers.ModelSerializer):
     shippingAddress = serializers.SerializerMethodField(read_only=True)
     user = serializers.SerializerMethodField(read_only=True)
     class Meta:
-        model = Order
+        model = OrderItem
         fields =  '__all__'
 
     def get_orderItems(self,obj):

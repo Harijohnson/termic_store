@@ -56,8 +56,8 @@
                     dispatch(listMyOrders())
                 }
                 else{
-                    setName(user.name)
-                    setEmail(user.email)
+                    setName(user.name || "")
+                    setEmail(user.email || "")
                 }
 
             }
