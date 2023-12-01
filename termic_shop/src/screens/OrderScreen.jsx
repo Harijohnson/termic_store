@@ -62,7 +62,7 @@ function OrderScreen(  {match} ) {
                         addPayPalScript()
                     }
                     else{
-                        sdkReady(true)
+                        setSdkReady(true)
                     }
                 }
             } catch (error) {
@@ -72,7 +72,7 @@ function OrderScreen(  {match} ) {
         };
     
         fetchOrderDetails();
-    }, [order, orderId, dispatch,successPay,sdkReady]);
+    }, [order, orderId, dispatch,successPay]);
 
 
 
