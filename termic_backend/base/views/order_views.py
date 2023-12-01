@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
+from datetime import datetime
 # Create your views here.
 
 
@@ -81,10 +82,10 @@ def getOrderById(request, pk):
 
     try:
         order = Order.objects.get( _id=pk )
-        print('order is :',order)
+        # print('order is :',order)
         if user.is_staff or order.user == user :
             serializer =  OrderSerializer(order,many=False)
-            print('serializer is :',serializer)
+            # print('serializer is :',serializer)
             return Response(serializer.data)
         else:
             Response({'detail':'Not authorized to view this order'},status=status.HTTP_400_BAD_REQUEST)
@@ -93,10 +94,15 @@ def getOrderById(request, pk):
 
 
 
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def updateOrderToPaid(request,pk):
+    order =Order.objects.get(_id=pk)
 
-
-
-
+    order.isPaid = True
+    order.paidAt = datetime.now()
+    order.save()
+    return Response('Order was Paid')
 
 
 

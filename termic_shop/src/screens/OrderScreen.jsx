@@ -1,11 +1,17 @@
-import React,{ useEffect } from 'react'
+import React,{ useEffect, useState } from 'react'
 // import { useNavigate } from 'react-router-dom'
 import { Row,Col,ListGroup,Card,Image } from 'react-bootstrap'
 import { useDispatch,useSelector } from 'react-redux'
 import { Link,useParams } from 'react-router-dom'
 import Message from '../components/Message'
-import { getOrderDetails } from '../actions/orderActions'
+import { getOrderDetails,payOrder } from '../actions/orderActions'
 import Loader from '../components/Loader'
+import { PayPalButton } from 'react-paypal-button-v2'
+import { ORDER_PAY_RESET } from '../constants/OrderConstant'
+
+
+
+
 
 function OrderScreen(  {match} ) {
     const  { id } = useParams();
@@ -14,28 +20,48 @@ function OrderScreen(  {match} ) {
     const orderId  = id
     const  dispatch = useDispatch()
 
+    const [sdkReady,setSdkReady] = useState(false) 
+
     // const navigate = useNavigate();
     
+    const orderPay = useSelector((state)=>state.orderPay)
+    const { loading:loadingPay, success:successPay } = orderPay
+
     const orderDetails = useSelector((state)=>state.orderDetails)
     const { order,error,loading } = orderDetails
 
     if (!loading && !error){
     order.itemsPrice = order.orderItems.reduce((acc,item) => acc + item.price * item.qty,0 ).toFixed(2)
-    }
+    } 
     
-    // useEffect (()=>{
 
-    //     if (!order || order._id === Number(orderId)){
-    //     // console.log('the order is is from orderscreen is :',orderId)
-    //     dispatch(getOrderDetails(Number(orderId)))
-    //     }
-    // },[order,orderId,dispatch])
+    const addPayPalScript = () =>{
+        const script =document.createElement('script')
+        script.type = 'text/javascript'
+        script.src = 'https://www.paypal.com/sdk/js?client-id=AazML7DItushjgZYVB1vO-ZbyHPYlUOymuhxCtQS5bOUPFxPT0jjdu7cRKj9j7dZXQUqLbVr-ZUGtmcd&components=buttons'
+        script.async=true
+        script.onload = () =>{
+            setSdkReady(true)
+        }       
+        document.body.appendChild(script)
+
+    
+    }
 
     useEffect(() => {
         const fetchOrderDetails = async () => {
             try {
-                if (!order || order._id !== Number(orderId)) {
+                if (!order || successPay || order._id !== Number(orderId)) {
+                dispatch({type:ORDER_PAY_RESET})
                  dispatch(getOrderDetails(Number(orderId)));
+                }
+                else if(!order.isPaid){
+                    if(!window.paypal){
+                        addPayPalScript()
+                    }
+                    else{
+                        sdkReady(true)
+                    }
                 }
             } catch (error) {
                 console.error('Error fetching order details:', error);
@@ -44,7 +70,16 @@ function OrderScreen(  {match} ) {
         };
     
         fetchOrderDetails();
-    }, [order, orderId, dispatch]);
+    }, [order, orderId, dispatch,successPay]);
+
+
+
+    const successPaymentHandler= (paymentResult) =>{
+        dispatch(payOrder(orderId,paymentResult))
+    }
+
+
+
     return loading ? <Loader /> 
     : error ? (
         <Message varient='danger'>{error}</Message>
@@ -183,7 +218,20 @@ function OrderScreen(  {match} ) {
                         </Row>
                     </ListGroup.Item>
                     
+                    {!order.isPaid && (
+                        <ListGroup.Item>
+                            {loadingPay && <Loader />}
+                            {!sdkReady ? (
+                                <Loader />
 
+                            ) :(
+                                <PayPalButton 
+                                amount={order.totalPrice}
+                                onSuccess={successPaymentHandler} />
+                            )}
+                        </ListGroup.Item>
+                    )
+                    }
                 </ListGroup>
             </Card>
             
@@ -193,3 +241,7 @@ function OrderScreen(  {match} ) {
 }
 
 export default OrderScreen
+
+
+// client id from paypal site
+// AZkuuNMjCrMWUvFBVKsyt3TlS3fQCdt4rTUdkpI5CCyUvnTKdjO1Qxx_VFPhwqmoStJE1LWDvUtGPKJh
