@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
+from datetime import datetime
 # Create your views here.
 
 
@@ -93,10 +94,15 @@ def getOrderById(request, pk):
 
 
 
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def updateOrderToPaid(request,pk):
+    order =Order.objects.get(_id=pk)
 
-
-
-
+    order.isPaid = True
+    order.paidAt = datetime.now()
+    order.save()
+    return Response('Order was Paid')
 
 
 
