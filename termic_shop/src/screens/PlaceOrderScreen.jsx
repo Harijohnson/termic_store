@@ -143,7 +143,7 @@ function PlaceOrderScreen() {
                     <ListGroup.Item>
                         <Row>
                             <Col>
-                                Items : 
+                                Item Price : 
                             </Col>
                             <Col>
                                 ${cart.itemsPrice}
@@ -198,7 +198,7 @@ function PlaceOrderScreen() {
                         type='button'
                         className='btn-block'
                         disabled = {cart.cartItems === 0 }
-                        onClick = {placeOrder}>
+                        onClick = { placeOrder }>
                             Place Order
                         </Button>
                     </ListGroup.Item>

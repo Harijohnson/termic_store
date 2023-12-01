@@ -28,7 +28,7 @@ function OrderScreen(  {match} ) {
     const { loading:loadingPay, success:successPay } = orderPay
 
     const orderDetails = useSelector((state)=>state.orderDetails)
-    const { order,error,loading } = orderDetails
+    const { loading,error,order } = orderDetails
 
     if (!loading && !error){
     order.itemsPrice = order.orderItems.reduce((acc,item) => acc + item.price * item.qty,0 ).toFixed(2)

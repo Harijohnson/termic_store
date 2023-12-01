@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view,permission_classes
 from rest_framework.response import Response
 from base.models import User,Order,OrderItem,ShippingAddress,Product
-from base.serializers import UserSerializer,UserSerializerWithToken,OrderSerializer
+from base.serializers import UserSerializer,UserSerializerWithToken,OrderSerializer,OrderItemSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -58,10 +58,9 @@ def addOrderItems(request):
                 name=product.name,
                 qty= i['qty'],
                 price = i['price'],
-                image = product.image.url,
+                # image = product.image.url,
 
             )
-
 
         # update stock
 
@@ -77,6 +76,7 @@ def addOrderItems(request):
 def getMyOrders(request):
     user = request.user
     orders = user.order_set.all()
+    # print('orders :' ,orders)
     serializer = OrderSerializer(orders ,many=True)
     return Response(serializer.data)
 
@@ -85,11 +85,12 @@ def getMyOrders(request):
 @permission_classes([IsAuthenticated])
 def getOrderById(request, pk):
     user = request.user
-    # print(user)
-
+    print(user)
+    # order = Order.objects.get( _id=pk )
+    # print(order)
     try:
         order = Order.objects.get( _id=pk )
-        # print('order is :',order)
+        print('order is :',order)
         if user.is_staff or order.user == user :
             serializer =  OrderSerializer(order,many=False)
             # print('serializer is :',serializer)
