@@ -18,6 +18,13 @@ export const  ORDER_DETAILS_FAILE = 'ORDER_DETAILS_FAILE'
 
 
 
+export const  ORDER_PAY_REQUEST = 'ORDER_PAY_REQUEST'
+export const  ORDER_PAY_SUCCESS = 'ORDER_PAY_SUCCESS'
+export const  ORDER_PAY_FAILE = 'ORDER_PAY_FAILE'
+export const  ORDER_PAY_RESET = 'ORDER_PAY_RESET'
+
+
+
 
 
 
