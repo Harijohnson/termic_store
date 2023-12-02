@@ -4,7 +4,7 @@ import  Loader   from '../components/Loader'
 import  Message   from '../components/Message'
 import { useDispatch,useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
-import { listUsers } from '../actions/userActions'
+import { listUsers,deleteUser } from '../actions/userActions'
 import { useNavigate } from 'react-router-dom'
 
 
@@ -19,8 +19,17 @@ function UserListScreen() {
     const { loading ,error, users } = userList
 
 
-    const userLogin  = useSelector(state => state.userLogin)  //grt the user info 
+    const userLogin  = useSelector(state => state.userLogin)  //get the user info 
     const { userInfo } = userLogin
+
+
+
+
+    const userDelete  = useSelector(state => state.userDelete) 
+    const { success:successDelete } = userDelete
+
+
+
 
 
 
@@ -30,10 +39,12 @@ function UserListScreen() {
       }else{
         navigate('/login')
       }
-    },[dispatch,navigate,userInfo])
+    },[dispatch,navigate,userInfo,successDelete])
 
     const deleteHandler =(id) => {
-      console.log('Delete',id)
+      if(window.confirm('Are you suse you want ti delete this user ?')){
+      dispatch(deleteUser(id))
+      }
     }
 
 
