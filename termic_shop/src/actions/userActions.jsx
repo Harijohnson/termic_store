@@ -22,7 +22,11 @@ import {
     USER_LIST_REQUEST,
     USER_LIST_SUCCESS,
     USER_LIST_FAILE,
-    USER_LIST_RESET,    } from '../constants/userConstants'
+    USER_LIST_RESET, 
+
+    USER_DELETE_REQUEST,
+    USER_DELETE_SUCCESS,
+    USER_DELETE_FAILE,} from '../constants/userConstants'
 import axios  from 'axios'
 
 
@@ -256,6 +260,52 @@ export  const  listUsers = ( ) => async (dispatch,getState) => {
     catch(error){
         dispatch({
             type:    USER_LIST_FAILE,
+            payload:error.response && error.response.data.detail
+            ?
+            error.response.data.detail:
+            error.detail,
+        })
+    }
+}
+
+
+
+
+
+
+export  const  deleteUser = (id) => async (dispatch,getState) => {
+    try{
+        dispatch({
+            type:USER_DELETE_REQUEST,
+    })
+
+    const {
+        userLogin : { userInfo },
+    }=getState()
+
+
+
+    const config = {
+        headers:{
+            'Content-type':'application/json',
+            Authorization  :`Bearer ${userInfo.token}`
+        }
+
+    }
+    const {data} = await axios.delete(
+        `/api/users/delete/${id}`,
+        config
+        )
+    
+    dispatch({
+        type:USER_DELETE_SUCCESS,
+        payload:data,
+    })
+    
+    }
+    catch(error){
+        dispatch({
+            type:    USER_DELETE_FAILE,
             payload:error.response && error.response.data.detail
             ?
             error.response.data.detail:
