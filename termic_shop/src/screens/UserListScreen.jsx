@@ -5,7 +5,7 @@ import  Message   from '../components/Message'
 import { useDispatch,useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 import { listUsers } from '../actions/userActions'
-
+import { useNavigate } from 'react-router-dom'
 
 
 
@@ -13,14 +13,24 @@ import { listUsers } from '../actions/userActions'
 function UserListScreen() {
 
     const dispatch =useDispatch()
-
+    const navigate = useNavigate();
 
     const userList  = useSelector(state => state.userList)
     const { loading ,error, users } = userList
 
+
+    const userLogin  = useSelector(state => state.userLogin)  //grt the user info 
+    const { userInfo } = userLogin
+
+
+
     useEffect (() => {
+      if(userInfo &&  userInfo.isAdmin){
         dispatch(listUsers())
-    },[dispatch])
+      }else{
+        navigate('/login')
+      }
+    },[dispatch,navigate,userInfo])
 
     const deleteHandler =(id) => {
       console.log('Delete',id)
@@ -65,15 +75,19 @@ function UserListScreen() {
                     )}</td>
 
 
-                    <td><LinkContainer to={`/admin/${user._id}`}>
-                      <Button variant='light' className='btn-sm'>
-                        <i className='fas fa-edit'></i>
-                      </Button>
-                      </LinkContainer></td>
+                      <td>
+                          <LinkContainer to={`/admin/${user._id}`}>
+                          <Button variant='light' className='btn-sm'>
+                            <i className='fas fa-edit'></i>
+                          </Button>
+                          </LinkContainer>
+                          
+                          <Button variant='danger' className='btn-sm' onClick={() => deleteHandler(user._id)}>
+                            <i className='fas fa-trash'></i>
+                          </Button>
+                      </td>
+
                       
-                      <Button variant='danger' className='btn-sm' onClick={() => deleteHandler(user._id)}>
-                        <i className='fas fa-trash'></i>
-                      </Button>
                     </tr>
                 ))}
               </tbody>
