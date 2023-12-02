@@ -21,7 +21,7 @@ import {
     ORDER_LIST_MY_REQUEST,
     ORDER_LIST_MY_SUCCESS,
     ORDER_LIST_MY_FAILE,
-    ORDER_LIST_MY_RESET,
+    // ORDER_LIST_MY_RESET,
     } from '../constants/OrderConstant'
 import axios from 'axios'
 
