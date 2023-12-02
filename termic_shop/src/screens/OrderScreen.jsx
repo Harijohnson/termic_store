@@ -223,7 +223,7 @@ function OrderScreen(  {match} ) {
                     {!order.isPaid && (
                         <ListGroup.Item>
                             {loadingPay && <Loader />}
-                            {!sdkReady ? (
+                            {!setSdkReady ? (
                                 <Loader />
 
                             ) :(
