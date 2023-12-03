@@ -48,7 +48,7 @@
             if (!userInfo){
                 navigate('/login')
             }else{
-                if (!user || !user.name || success){
+                if (!user || !user.name || success || userInfo._id !== user._id){
                     dispatch({type:
                     USER_UPDATE_PROFILE_RESET
                     })
@@ -183,19 +183,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {orders.map(order =>(
+                                {orders && orders.map(order =>(
                                     <tr key={order._id}>
                                         <td>
                                             {order._id}
                                         </td>
                                         <td>
-                                            {order.createdAt.substring(0,10)}
+                                            {order.createdAt &&  order.createdAt.substring(0,10)}
                                         </td>
                                         <td>
                                             ${order.totalPrice}
                                         </td>
                                         <td>
-                                            {order.isPaid ? order.paidAt.substring(0,10) : (
+                                            {order.isPaid ? (order.paidAt && order.paidAt.substring(0, 10))  : (
                                                 <i className='fas fa-times' style={{color:'red'}}></i>
                                             )}
                                         </td>
