@@ -38,7 +38,8 @@ function OrderScreen(  {match} ) {
     const addPayPalScript = () =>{
         const script =document.createElement('script')
         script.type = 'text/javascript'
-        script.src = 'https://www.paypal.com/sdk/js?client-id=AazML7DItushjgZYVB1vO-ZbyHPYlUOymuhxCtQS5bOUPFxPT0jjdu7cRKj9j7dZXQUqLbVr-ZUGtmcd&components=buttons'
+        script.src = 'https://www.paypal.com/sdk/js?client-id=AazML7DItushjgZYVB1vO-ZbyHPYlUOymuhxCtQS5bOUPFxPT0jjdu7cRKj9j7dZXQUqLbVr-ZUGtmcd&components=buttons&currency=USD'
+        // https://www.paypal.com/sdk/js?client-id=test&currency=USD
         script.async=true
         script.onload = () =>{
             setSdkReady(true)
@@ -84,7 +85,7 @@ function OrderScreen(  {match} ) {
 
     return loading ? <Loader /> 
     : error ? (
-        <Message varient='danger'>{error}</Message>
+        <Message variant='danger'>{error}</Message>
     ): 
     <div>
         <h1>Order : {order._id}</h1>
@@ -134,10 +135,10 @@ function OrderScreen(  {match} ) {
 
                 <ListGroup.Item>
                     <h2>Order Item  </h2>
-                    {order.orderItems.length ===0 ? <Message varient='info'>
+                    {order.orderItems.length ===0 ? <Message variant='info'>
                         Order is Empty
                     </Message> : (
-                        <ListGroup varient='flush'>
+                        <ListGroup variant='flush'>
                             {order.orderItems.map((item,index)=>(
                                 <ListGroup.Item key={index}>
                                     <Row>
@@ -145,7 +146,7 @@ function OrderScreen(  {match} ) {
                                             <Image src={item.image}  alt={item.name} fluid rounded/>
 
                                         </Col>
-                                        <Col varient='info'>
+                                        <Col variant='info'>
                                             <Link to={`/product/${item.product}`}>{item.name}</Link>
                                         </Col>
 
@@ -170,7 +171,7 @@ function OrderScreen(  {match} ) {
 
         <Col md={4}>
             <Card>
-                <ListGroup varient='flush'>
+                <ListGroup variant='flush'>
                     
                     <ListGroup.Item>
                         <h2>Order SUmmary</h2>
@@ -223,7 +224,7 @@ function OrderScreen(  {match} ) {
                     {!order.isPaid && (
                         <ListGroup.Item>
                             {loadingPay && <Loader />}
-                            {!setSdkReady ? (
+                            {!sdkReady ? (
                                 <Loader />
 
                             ) :(
