@@ -101,12 +101,13 @@ SIMPLE_JWT = {
 }
 
 
-
+CSRF_COOKIE_SECURE = True  # Set this to True if using HTTPS
 
 MIDDLEWARE = [
      # new install 
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
+    'django.middleware.csrf.CsrfViewMiddleware',
 
     #default imports
     'django.middleware.security.SecurityMiddleware',

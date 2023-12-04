@@ -7,6 +7,11 @@ import { useDispatch,useSelector } from 'react-redux'
 import { listProductDetails, updateProduct } from '../actions/productActions'
 import  FormContainer   from '../components/FormContainer'
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
+import  axios  from 'axios'
+
+
+
+
 function ProductEditScreen() {
 
 
@@ -29,6 +34,7 @@ function ProductEditScreen() {
     const [image,setImage] = useState('')
     const [countInStock,setCountInStock] = useState(0)
     const [description,setDescription] = useState("")
+    const [uploading,setUploading] = useState(false)
 
 
     const dispatch = useDispatch()
@@ -78,6 +84,52 @@ function ProductEditScreen() {
             }))
 
     }
+
+
+
+    const csrfToken = async () => {
+        const response = await axios.get('/getCSRFToken');
+        axios.defaults.headers.post['X-CSRF-Token'] = response.data.CSRFToken;
+     };
+
+
+
+    const uploadFileHandler  = async(e) => {
+        const file = e.target.files[0]
+        const formData =new FormData()
+
+        formData.append('image',file)
+        formData.append('produc_id',productId)
+
+        // setUploading(true)
+        // const token=localStorage.getItem('token');
+        // const csrfToken = document.token.match(/csrftoken=([^;]*)/)[1];
+
+        try{
+
+            const config ={
+                headers:{
+                    'Content-Type':'multipart/form-data',
+                    'X-CSRFToken': csrfToken,
+                
+                }
+            }
+            setUploading(true)
+
+
+            const {data} = await axios.post('api/products/upload/',formData,config)
+
+
+            setImage(data)
+            setUploading(false)
+
+        }catch(error){
+            setUploading(false)
+        }
+    }
+
+
+
   return (
 
     <div>
@@ -87,7 +139,7 @@ function ProductEditScreen() {
         <FormContainer>
             <h1>Edit Product</h1>
             {loadingUpdate && <Loader />}
-            {errorUpdate && <Message varian = 'danger'>{errorUpdate}</Message>}
+            {errorUpdate && <Message variant = 'danger'>{errorUpdate}</Message>}
 
 
             {loading ? <Loader />
@@ -132,6 +184,17 @@ function ProductEditScreen() {
                         onChange={(e)=>setImage(e.target.value)}>
 
                         </Form.Control>
+
+
+                        <Form.Control
+                        type='file'
+                        label ='Choose Image'
+                        custom='true'
+                        onChange ={ uploadFileHandler}>
+                            
+                        </Form.Control>
+                        {uploading && <Loader />}
+
                     </Form.Group>
 
 
