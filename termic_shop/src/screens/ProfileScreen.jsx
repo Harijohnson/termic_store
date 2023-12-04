@@ -18,8 +18,8 @@
         const userDetails = useSelector((state) => state.userDetails)
         const { error,loading,user } = userDetails
 
-        const [name,setName] = useState(user ? user.name : "")
-        const [email,setEmail] = useState(user ? user.email  :  '')
+        const [name,setName] = useState( user.name || "")
+        const [email,setEmail] = useState( user.email  ||  '')
         const [password,setPassword] = useState('')
         const [confirmPassword,setConfirmPassword] = useState('')
         const [message,setMessage] = useState('')
