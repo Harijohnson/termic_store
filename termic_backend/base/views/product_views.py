@@ -85,7 +85,7 @@ def deleteProduct(request,pk):
 
 
 @api_view(['POST'])
-@csrf_protect
+@permission_classes([IsAdminUser])
 def uploadImage(request):
     data = request.data
 
@@ -96,7 +96,7 @@ def uploadImage(request):
 
 
     product.image = request.FILES.get('image')
-
+    print('you git here')
     product.save()
 
     return Response('Image was Uploaded')

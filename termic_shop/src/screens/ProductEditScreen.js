@@ -85,23 +85,82 @@ function ProductEditScreen() {
 
     }
 
-
-
-    const csrfToken = async () => {
-        const response = await axios.get('/getCSRFToken');
-        axios.defaults.headers.post['X-CSRF-Token'] = response.data.CSRFToken;
-     };
+   
+   
 
 
 
-    const uploadFileHandler  = async(e) => {
+
+
+
+
+
+
+
+
+
+
+    const uploadFileHandler  = async(e) =>
+     {
+
+
+
+
+         // Retrieve user information from local storage
+    const userInfoString = localStorage.getItem('userInfo');
+
+    // Parse the JSON string to get the user information object
+    const userInfo = JSON.parse(userInfoString);
+
+    // Access the access token property
+    const accessToken = userInfo.access;
+
+    console.log('look below for csrf token')
+    console.log(accessToken)
+
+    // Use the accessToken in your code for handling CSRF token errors
+    // For example, setting the CSRF token in your Axios headers
+    axios.defaults.headers.common['X-CSRF-Token'] = accessToken;
+
+
+
+
+
+
+
+
+
+
         const file = e.target.files[0]
+
+
+        // await csrfToken();
+
+
+
+
+        console.log('look below')
+        console.log(accessToken)
+
+
+
         const formData =new FormData()
+
+
+
+        // console.log('look below')
+        // console.log(formData)
+
+
 
         formData.append('image',file)
         formData.append('produc_id',productId)
 
-        // setUploading(true)
+
+        console.log('look below for form data')
+        console.log(productId)
+
+        setUploading(true)
         // const token=localStorage.getItem('token');
         // const csrfToken = document.token.match(/csrftoken=([^;]*)/)[1];
 
@@ -110,15 +169,24 @@ function ProductEditScreen() {
             const config ={
                 headers:{
                     'Content-Type':'multipart/form-data',
-                    'X-CSRFToken': csrfToken,
+                    'X-CSRFToken': accessToken,
                 
                 }
             }
-            setUploading(true)
+            // setUploading(true)
+            // console.log('look below before   data')
+            // console.log('data is : ',config)
+
 
 
             const {data} = await axios.post('api/products/upload/',formData,config)
 
+
+            // console.log('look below after data')
+            // console.log('data is : ',data)
+
+
+            
 
             setImage(data)
             setUploading(false)
