@@ -5,6 +5,14 @@ from base.models import Product
 from base.serializers import ProductSerializer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.decorators import api_view,permission_classes
+from django.views.decorators.csrf import csrf_protect
+
+
+
+
+
+
+
 
 @api_view(['GET'])
 def getProducts(request):
@@ -37,7 +45,7 @@ def createProduct(request):
         brand = 'Sample Brand',
         countInStock = 0,
         category = 'Sample category',
-        discription = 'Sample Discription',
+        description = 'Sample Discription',
         ratings = 0,
     )
     serializer = ProductSerializer(product,many =  False)
@@ -58,7 +66,7 @@ def updateProduct(request,pk):
     product.brand = data['brand']
     product.countInStock = data['countInStock']
     product.category = data['category']
-    product.discription = data['discription']
+    product.description = data['description']
 
     product.save()
     product = Product.objects.get(_id=pk)
@@ -74,4 +82,29 @@ def deleteProduct(request,pk):
     product = Product.objects.get(_id=pk)
     product.delete()
     return Response('Product is deleted')
+
+
+@api_view(['POST'])
+@csrf_protect
+def uploadImage(request):
+    data = request.data
+
+    product_id = data[product_id]
+
+
+    product = Product.objects.get(_id=product_id)
+
+
+    product.image = request.FILES.get('image')
+
+    product.save()
+
+    return Response('Image was Uploaded')
+
+
+
+
+
+
+
 

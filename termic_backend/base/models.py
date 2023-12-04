@@ -9,7 +9,7 @@ class Product(models.Model):
     image = models.ImageField(null=True,blank=True,default='/placeholder.png')
     brand = models.CharField(max_length=200,null=True,blank=True)
     category = models.CharField(max_length=200,null=True,blank=True)
-    discription = models.TextField(null=True,blank=True)
+    description = models.TextField(null=True,blank=True)
     ratings =  models.DecimalField(max_digits=20,decimal_places=2,null=True,blank=True)
     numReviews = models.BigIntegerField(null=True,blank=True,default=0)
     price = models.DecimalField(max_digits=20,decimal_places=2,null=True,blank=True)
