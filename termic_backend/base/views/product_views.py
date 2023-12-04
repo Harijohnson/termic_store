@@ -58,7 +58,7 @@ def updateProduct(request,pk):
     product.brand = data['brand']
     product.countInStock = data['countInStock']
     product.category = data['category']
-    product.discription = data['discription']
+    product.description = data['description']
 
     product.save()
     product = Product.objects.get(_id=pk)
