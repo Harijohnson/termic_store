@@ -28,7 +28,16 @@ import {
     ORDER_LIST_REQUEST,
     ORDER_LIST_SUCCESS,
     ORDER_LIST_FAILE,
+    
+
+
+    ORDER_DELIVERED_REQUEST,
+    ORDER_DELIVERED_SUCCESS,
+    ORDER_DELIVERED_FAILE,
+    ORDER_DELIVERED_RESET,
     } from '../constants/OrderConstant'
+
+
 import axios from 'axios'
 
 import { CART_CLEAR_ITEMS } from '../constants/cartConstants'
@@ -303,4 +312,50 @@ export  const  listOrders= ( ) => async (dispatch,getState) => {
 }
 
 
+
+
+
+
+
+
+
+export  const  deliverOrder= ( order ) => async (dispatch,getState) => {
+    try{
+        dispatch({
+            type:ORDER_DELIVERED_REQUEST,
+        })
+
+        const {
+            userLogin : { userInfo },
+        } = getState()
+
+
+
+        const config = {
+            headers:{
+                'Content-type':'application/json',
+                Authorization  :`Bearer ${userInfo.token}`
+            }
+        }
+        const {data} = await axios.put(
+            `/api/orders/${order._id}/delivered/`,
+            {},
+            config
+            )
+        
+        dispatch({
+            type:ORDER_DELIVERED_SUCCESS,
+            payload:data,
+        })
+    }   
+    catch(error){
+        dispatch({
+            type:    ORDER_DELIVERED_FAILE,
+            payload:error.response && error.response.data.detail
+            ?
+            error.response.data.detail:
+            error.detail,
+        })
+    }
+}
 

@@ -1,13 +1,13 @@
 import React,{ useEffect, useState } from 'react'
 // import { useNavigate } from 'react-router-dom'
-import { Row,Col,ListGroup,Card,Image } from 'react-bootstrap'
+import { Row,Col,ListGroup,Card,Image, Button } from 'react-bootstrap'
 import { useDispatch,useSelector } from 'react-redux'
-import { Link,useParams } from 'react-router-dom'
+import { Link,useParams,useNavigate } from 'react-router-dom'
 import Message from '../components/Message'
-import { getOrderDetails,payOrder } from '../actions/orderActions'
+import { getOrderDetails,payOrder,deliverOrder } from '../actions/orderActions'
 import Loader from '../components/Loader'
 import { PayPalButton } from 'react-paypal-button-v2'
-import { ORDER_PAY_RESET } from '../constants/OrderConstant'
+import { ORDER_PAY_RESET,ORDER_DELIVERED_RESET } from '../constants/OrderConstant'
 
 
 
@@ -15,6 +15,7 @@ import { ORDER_PAY_RESET } from '../constants/OrderConstant'
 
 function OrderScreen(  {match} ) {
     const  { id } = useParams();
+    const navigate = useNavigate();
     // const orderId = match.params.id
 
     const orderId  = id
@@ -24,11 +25,38 @@ function OrderScreen(  {match} ) {
 
     // const navigate = useNavigate();
     
+
+
+
+
     const orderPay = useSelector((state)=>state.orderPay)
     const { loading:loadingPay, success:successPay } = orderPay
 
+
+
+
+    
+    const orderDelivered = useSelector((state)=>state.orderDelivered)
+    const { loading:loadingDelivered, success:successDelivered } = orderDelivered
+
+
+
+
+
+
+
+
+
     const orderDetails = useSelector((state)=>state.orderDetails)
     const { order,error,loading } = orderDetails
+
+
+    
+    const userLogin = useSelector((state)=>state.userLogin)
+    const { userInfo } = userLogin
+
+
+    
 
     if (!loading && !error){
     order.itemsPrice = order.orderItems.reduce((acc,item) => acc + item.price * item.qty,0 ).toFixed(2)
@@ -50,12 +78,22 @@ function OrderScreen(  {match} ) {
     }
 
     useEffect(() => {
+        if(!userInfo){
+            navigate('/login')
+        }
+
+
         const fetchOrderDetails = async () => {
             try {
-                if (!order || successPay || order._id !== Number(orderId)) {
+                if (!order || successPay || order._id !== Number(orderId) || successDelivered) {
                 dispatch({
                     type:ORDER_PAY_RESET
                 })
+
+                dispatch({type:ORDER_DELIVERED_RESET})
+
+
+
                  dispatch(getOrderDetails(Number(orderId)));
                 }
                 else if(!order.isPaid){
@@ -73,7 +111,7 @@ function OrderScreen(  {match} ) {
         };
     
         fetchOrderDetails();
-    }, [order, orderId, dispatch,successPay]);
+    }, [order, orderId, dispatch,successPay,successDelivered]);
 
 
 
@@ -82,6 +120,11 @@ function OrderScreen(  {match} ) {
         dispatch(payOrder(orderId,paymentResult))
     }
 
+
+
+    const deliveredHandler  =  () =>{
+        dispatch(deliverOrder(order))
+    }
 
 
     return loading ? <Loader /> 
@@ -140,7 +183,7 @@ function OrderScreen(  {match} ) {
                         Order is Empty
                     </Message> : (
                         <ListGroup variant='flush'>
-                            {order.orderItems.map((item,index)=>(
+                            {order && order.orderItems &&  order.orderItems.map((item,index)=>(
                                 <ListGroup.Item key={index}>
                                     <Row>
                                         <Col md={1}>
@@ -237,6 +280,20 @@ function OrderScreen(  {match} ) {
                     )
                     }
                 </ListGroup>
+
+
+
+                    {loadingDelivered && <Loader />}
+                {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                    <ListGroup.Item>
+                        <Button
+                        type='button'
+                        className='btn btn-block'
+                        onClick = {deliveredHandler}>
+                            Mark As Delivered
+                        </Button>
+                    </ListGroup.Item>
+                )}
             </Card>
             
         </Col>
