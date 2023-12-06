@@ -9,7 +9,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 
-
 @api_view(['POST'])
 @permission_classes([IsAdminUser])
 def uploadImage(request):
