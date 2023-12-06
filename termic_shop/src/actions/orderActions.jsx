@@ -22,6 +22,12 @@ import {
     ORDER_LIST_MY_SUCCESS,
     ORDER_LIST_MY_FAILE,
     // ORDER_LIST_MY_RESET,
+
+
+
+    ORDER_LIST_REQUEST,
+    ORDER_LIST_SUCCESS,
+    ORDER_LIST_FAILE,
     } from '../constants/OrderConstant'
 import axios from 'axios'
 
@@ -244,6 +250,57 @@ export  const  listMyOrders= ( ) => async (dispatch,getState) => {
 }
 
 
+
+
+
+
+
+
+export  const  listOrders= ( ) => async (dispatch,getState) => {
+    try{
+        dispatch({
+            type:ORDER_LIST_REQUEST,
+    })
+
+    const {
+        userLogin : { userInfo },
+    } = getState()
+
+
+
+    const config = {
+        headers:{
+            'Content-type':'application/json',
+            Authorization  :`Bearer ${userInfo.token}`
+        }
+
+    }
+    const {data} = await axios.get(
+        // console.log('the product id is :',id)
+        `/api/orders/`,
+        config
+        )
+    
+    dispatch({
+        type:ORDER_LIST_SUCCESS,
+        payload:data,
+    })
+
+
+
+
+
+    }
+    catch(error){
+        dispatch({
+            type:    ORDER_LIST_FAILE,
+            payload:error.response && error.response.data.detail
+            ?
+            error.response.data.detail:
+            error.detail,
+        })
+    }
+}
 
 
 
