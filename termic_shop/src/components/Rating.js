@@ -1,7 +1,7 @@
 import React from 'react'
 
-function Rating(props) {
-    const { value, text, color } = props;
+function Rating( {value, text, color } ) {
+  console.log(value)
   
   return (
     <div className='rating'>

@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from base.models import Product
+from base.models import Product,Review
 from base.serializers import ProductSerializer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.decorators import api_view,permission_classes
 from django.views.decorators.csrf import csrf_exempt
-
+from rest_framework import status
 
 
 @api_view(['POST'])
@@ -111,3 +111,55 @@ def deleteProduct(request,pk):
     return Response('Product is deleted')
 
 
+
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def createProductReview(request,pk):
+    user = request.user
+    product = Product.objects.get(_id=pk)
+    data = request.data
+    print('look below for data from front end')
+    print(data)
+
+    # 1  senario if review alread exist stop the user to syop multiple reviews
+
+    alreadyExist = product.review_set.filter(user=user).exists()
+
+    if alreadyExist:
+        content = {'detail':'Product Alread reviewed'}
+
+        return Response (content,status=status.HTTP_400_BAD_REQUEST)
+    # 2 No reating or 0
+    if data['rating']== 0 :
+        content = {'detail':'Select a ratings'}
+
+        return Response (content,status=status.HTTP_400_BAD_REQUEST)
+
+    # 3 create review
+
+    else:
+        review =Review .objects.create(
+            user  = user,
+            product = product,
+            name = user.first_name,
+            rating = data['rating'],
+            comment = data['comment']
+        )
+
+
+        reviews = product.review_set.all()
+        product.numReviews = len(reviews)
+
+
+        total = 0
+        for i in reviews:
+            total += i.rating
+
+
+        product.rating = total/ len(reviews)
+        product.save()
+
+        return Response('Review is Added')
