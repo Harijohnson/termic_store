@@ -55,7 +55,12 @@ function ProductEditScreen() {
     const productUpdate = useSelector((state) => state.productUpdate)
     const { error:errorUpdate,loading:loadingUpdate,success:successUpdate} = productUpdate
 
+        
+    const userLogin = useSelector((state)=>state.userLogin)
+    const { userInfo } = userLogin
 
+
+    
     
     useEffect (() => {
 
@@ -93,22 +98,6 @@ function ProductEditScreen() {
     }
 
    
-   
-
-    const userInfoString = localStorage.getItem('userInfo');
-
-            
-    // Parse the JSON string into a JavaScript object
-    const userInfo = JSON.parse(userInfoString);
-    
-    // Access the token property
-    const token = userInfo.token;
-    
-
-
-
-
-
 
 
     const uploadFileHandler  = async(e) =>
@@ -121,19 +110,18 @@ function ProductEditScreen() {
         formData.append('produc_id',productId)
         setUploading(true)
 
-
         try{
 
 
             const config ={
                 headers:{
                     'Content-Type':'multipart/form-data',
-                    'Authorization': `Bearer ${token}`,
+                    Authorization  :`Bearer ${userInfo.token}`
                 }
             }
 
 
-            const {data} = await axios.post('api/products/upload/',formData,config,{withCredentials: true})
+            const {data} = await axios.post('api/products/upload/',formData,config)
 
             setImage(data)
             setUploading(false)
