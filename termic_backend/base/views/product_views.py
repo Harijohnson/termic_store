@@ -5,7 +5,35 @@ from base.models import Product
 from base.serializers import ProductSerializer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.decorators import api_view,permission_classes
-from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_exempt
+
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAdminUser])
+def uploadImage(request):
+    data = request.data
+    # print('LOOK BELOW FOR DATA')
+    # print(data)
+    product_id = data['product_id']
+
+
+   
+
+    product = Product.objects.get(_id=product_id)
+
+
+    # Check if 'image' key exists in request.FILES
+    if 'image' in request.FILES:
+        product.image = request.FILES['image']
+        product.save()
+        return Response('Image was Uploaded')
+    else:
+        return Response('No image provided', status=400)
+
+
+
 
 
 
@@ -52,7 +80,7 @@ def createProduct(request):
     return Response(serializer.data)
 
 
-
+@csrf_exempt
 @api_view(['PUT'])
 @permission_classes([IsAdminUser])
 def updateProduct(request,pk):
@@ -82,29 +110,5 @@ def deleteProduct(request,pk):
     product = Product.objects.get(_id=pk)
     product.delete()
     return Response('Product is deleted')
-
-
-@api_view(['POST'])
-@permission_classes([IsAdminUser])
-def uploadImage(request):
-    data = request.data
-
-    product_id = data[product_id]
-
-
-    product = Product.objects.get(_id=product_id)
-
-
-    product.image = request.FILES.get('image')
-    print('you git here')
-    product.save()
-
-    return Response('Image was Uploaded')
-
-
-
-
-
-
 
 

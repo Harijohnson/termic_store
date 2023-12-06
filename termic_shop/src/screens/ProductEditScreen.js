@@ -37,6 +37,13 @@ function ProductEditScreen() {
     const [uploading,setUploading] = useState(false)
 
 
+
+
+
+
+
+
+
     const dispatch = useDispatch()
 
     
@@ -88,11 +95,15 @@ function ProductEditScreen() {
    
    
 
+    const userInfoString = localStorage.getItem('userInfo');
 
-
-
-
-
+            
+    // Parse the JSON string into a JavaScript object
+    const userInfo = JSON.parse(userInfoString);
+    
+    // Access the token property
+    const token = userInfo.token;
+    
 
 
 
@@ -103,90 +114,26 @@ function ProductEditScreen() {
     const uploadFileHandler  = async(e) =>
      {
 
-
-
-
-         // Retrieve user information from local storage
-    const userInfoString = localStorage.getItem('userInfo');
-
-    // Parse the JSON string to get the user information object
-    const userInfo = JSON.parse(userInfoString);
-
-    // Access the access token property
-    const accessToken = userInfo.access;
-
-    console.log('look below for csrf token')
-    console.log(accessToken)
-
-    // Use the accessToken in your code for handling CSRF token errors
-    // For example, setting the CSRF token in your Axios headers
-    axios.defaults.headers.common['X-CSRF-Token'] = accessToken;
-
-
-
-
-
-
-
-
-
-
         const file = e.target.files[0]
-
-
-        // await csrfToken();
-
-
-
-
-        console.log('look below')
-        console.log(accessToken)
-
-
-
         const formData =new FormData()
-
-
-
-        // console.log('look below')
-        // console.log(formData)
-
-
 
         formData.append('image',file)
         formData.append('produc_id',productId)
-
-
-        console.log('look below for form data')
-        console.log(productId)
-
         setUploading(true)
-        // const token=localStorage.getItem('token');
-        // const csrfToken = document.token.match(/csrftoken=([^;]*)/)[1];
+
 
         try{
+
 
             const config ={
                 headers:{
                     'Content-Type':'multipart/form-data',
-                    'X-CSRFToken': accessToken,
-                
+                    'Authorization': `Bearer ${token}`,
                 }
             }
-            // setUploading(true)
-            // console.log('look below before   data')
-            // console.log('data is : ',config)
 
 
-
-            const {data} = await axios.post('api/products/upload/',formData,config)
-
-
-            // console.log('look below after data')
-            // console.log('data is : ',data)
-
-
-            
+            const {data} = await axios.post('api/products/upload/',formData,config,{withCredentials: true})
 
             setImage(data)
             setUploading(false)
@@ -245,6 +192,7 @@ function ProductEditScreen() {
                         <Form.Label>
                             Image
                         </Form.Label>
+
                         <Form.Control 
                         type='text'
                         placeholder='Enter Image'
