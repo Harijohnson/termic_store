@@ -43,7 +43,15 @@ def uploadImage(request):
 
 @api_view(['GET'])
 def getProducts(request):
-    products = Product.objects.all()
+    query = request.query_params.get('keyword')
+
+
+    if query  == None:
+        query=""
+    
+
+
+    products = Product.objects.filter(name__icontains=query)  #if the name of the product contains any values in side of the query  filter it and return it back
     serializer = ProductSerializer(products,many =  True)
     return Response(serializer.data)
 
