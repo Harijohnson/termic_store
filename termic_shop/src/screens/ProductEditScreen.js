@@ -37,6 +37,13 @@ function ProductEditScreen() {
     const [uploading,setUploading] = useState(false)
 
 
+
+
+
+
+
+
+
     const dispatch = useDispatch()
 
     
@@ -85,40 +92,48 @@ function ProductEditScreen() {
 
     }
 
+   
+   
+
+    const userInfoString = localStorage.getItem('userInfo');
+
+            
+    // Parse the JSON string into a JavaScript object
+    const userInfo = JSON.parse(userInfoString);
+    
+    // Access the token property
+    const token = userInfo.token;
+    
 
 
-    const csrfToken = async () => {
-        const response = await axios.get('/getCSRFToken');
-        axios.defaults.headers.post['X-CSRF-Token'] = response.data.CSRFToken;
-     };
 
 
 
-    const uploadFileHandler  = async(e) => {
+
+
+    const uploadFileHandler  = async(e) =>
+     {
+
         const file = e.target.files[0]
         const formData =new FormData()
 
         formData.append('image',file)
         formData.append('produc_id',productId)
+        setUploading(true)
 
-        // setUploading(true)
-        // const token=localStorage.getItem('token');
-        // const csrfToken = document.token.match(/csrftoken=([^;]*)/)[1];
 
         try{
+
 
             const config ={
                 headers:{
                     'Content-Type':'multipart/form-data',
-                    'X-CSRFToken': csrfToken,
-                
+                    'Authorization': `Bearer ${token}`,
                 }
             }
-            setUploading(true)
 
 
-            const {data} = await axios.post('api/products/upload/',formData,config)
-
+            const {data} = await axios.post('api/products/upload/',formData,config,{withCredentials: true})
 
             setImage(data)
             setUploading(false)
@@ -177,6 +192,7 @@ function ProductEditScreen() {
                         <Form.Label>
                             Image
                         </Form.Label>
+
                         <Form.Control 
                         type='text'
                         placeholder='Enter Image'
