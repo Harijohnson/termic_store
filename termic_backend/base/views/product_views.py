@@ -121,20 +121,20 @@ def createProductReview(request,pk):
     user = request.user
     product = Product.objects.get(_id=pk)
     data = request.data
-
-
+    print('look below for data from front end')
+    print(data)
 
     # 1  senario if review alread exist stop the user to syop multiple reviews
 
     alreadyExist = product.review_set.filter(user=user).exists()
 
     if alreadyExist:
-        content = {'details':'Product Alread reviewed'}
+        content = {'detail':'Product Alread reviewed'}
 
         return Response (content,status=status.HTTP_400_BAD_REQUEST)
     # 2 No reating or 0
-    elif data['rating'] == 0 :
-        content = {'details':'Enter ratings'}
+    if data['rating']== 0 :
+        content = {'detail':'Select a ratings'}
 
         return Response (content,status=status.HTTP_400_BAD_REQUEST)
 

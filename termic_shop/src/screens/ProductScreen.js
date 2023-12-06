@@ -1,31 +1,79 @@
 import React,{useEffect, useState} from 'react'
 import { Link,useParams,useNavigate  } from 'react-router-dom'
-import { Row,Col,Image,ListGroup,Card,Button,Form, } from 'react-bootstrap'
+import { Row,Col,Image,ListGroup,Card,Button,Form, FormGroup, } from 'react-bootstrap'
 import Rating from '../components/Rating'
 import { useDispatch,useSelector } from 'react-redux'
-import { listProductDetails } from '../actions/productActions'
+import { listProductDetails,createProductReview } from '../actions/productActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 
+import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
 
 
 
-
-function ProductScreen(  { match,history }  ) {
-  const { id } = useParams();
+function ProductScreen(  ) {
+ 
   const dispatch = useDispatch()
+
+
+
+
   const productDetails = useSelector(state => state.productDetails)
   const { loading,error,product } = productDetails
+
+  const userLogin = useSelector(state => state.userLogin)
+  const { userInfo } = userLogin
+
+
+  const productReviewCreate = useSelector(state => state.productReviewCreate)
+  const { loading:loadingProductReview,
+    error:errorProductReview,
+    success:successProductReview
+   } = productReviewCreate
+
+
+
+
   const [qty,setQty] = useState(1)
+  const [rating,setRating] = useState(0)
+  const [comment,setComment] = useState("")
+
+
+
+
+
+  const { id } = useParams();
+
   const navigate = useNavigate();
 
   useEffect(()=>{
+
+    if(successProductReview){
+      setRating(0)
+      setComment('')
+      dispatch({type:PRODUCT_CREATE_REVIEW_RESET})
+    }
+
+
+
+
+
       dispatch(listProductDetails(id))
     
-      },[dispatch,id])
+      },[dispatch,id,successProductReview])
     
   const addToCartHandeler = () =>{
       navigate(`/cart/${id}?qty=${qty}`)
+  }
+
+
+
+  const submitHandeler = (e) => {
+    e.preventDefault()
+    dispatch(createProductReview(
+     id,{rating,comment}
+
+    ))
   }
   return (
     <div>
@@ -37,6 +85,7 @@ function ProductScreen(  { match,history }  ) {
           <Message variant={'danger'}> {error}</Message>
           :
           (
+            <div>
             <Row>
 
             <Col md={6}>
@@ -50,7 +99,7 @@ function ProductScreen(  { match,history }  ) {
                 </ListGroup.Item>
     
                 <ListGroup.Item>
-                  <Rating value={product.rating} text={`${product.numReviews} reviews`}  color={'#f8e825'}/>
+                  <Rating value={product.ratings} text={`${product.numReviews} reviews`}  color={'#f8e825'}/>
                 </ListGroup.Item>
                 
                 <ListGroup.Item>
@@ -127,7 +176,108 @@ function ProductScreen(  { match,history }  ) {
               </Card>
             </Col>
     
-          </Row>
+            </Row>
+
+            <Row>
+              <Col md={6}>
+                <h4>Reviews</h4>
+                  {product.reviews.length === 0 && 
+                  <Message variant = 'info'>
+                    No Reviews
+                    </Message>}
+
+                  <ListGroup variant='flush'>
+                    {product.reviews.map((review)=>(
+                      <ListGroup.Item key = {review._id}>
+                        <strong>{review.name}</strong>
+                        <Rating value={review.rating} color='#f8e835'> </Rating>
+                          <p>{ review.createdAt.substring(0,10)}</p>
+                          <p>{ review.comment }</p>
+                        
+                      </ListGroup.Item>
+
+                    ))}
+
+
+                    <ListGroup.Item>
+                      <h4>Write a Review</h4>
+
+                      {loadingProductReview && <Loader/>}
+                      {successProductReview && <Message variant='success'>Review Successfully Submited</Message>}
+                      {errorProductReview && <Message variant='success'>{errorProductReview}</Message>}
+                      
+                      
+                      
+                      
+                      {userInfo  ? (
+                        <Form onSubmit={ submitHandeler}>
+
+                            <Form.Group controlId='rating'>
+
+                              <Form.Label>
+                                Rating
+                              </Form.Label>
+                              <Form.Control as='select' 
+                              value = {rating} 
+                              onChange={(e) => setRating(e.target.value)}>
+                                <option
+                                  value = "">
+                                    Select ..
+                                </option>
+                                <option
+                                  value = "1">
+                                    1  -  Poor
+                                </option>
+                                <option
+                                  value = "2">
+                                    2  -  Fair
+                                </option>
+                                <option
+                                  value = "3">
+                                    3  -  Good
+                                </option>
+                                <option
+                                  value = "4">
+                                    4  -  Very Good
+                                </option>
+                                <option
+                                  value = "5">
+                                   5  -  Excelent
+                                </option>
+                              </Form.Control>
+                            </Form.Group>
+
+
+                          <FormGroup controlId ='comment'>
+                              <Form.Label>
+                                Review
+                              </Form.Label>
+                              <Form.Control
+                              as = 'textarea'
+                              row = '5'
+                              value ={comment}
+                              placeholder='Wrie a review'
+                              onChange={(e)=>setComment(e.target.value)}>
+
+                              </Form.Control>
+                          </FormGroup>
+
+                        <Button disabled ={loadingProductReview} 
+                        type='submit'
+                        variant='primary'>
+                          Submit
+                        </Button>
+
+                        </Form>
+                      ) : (
+                        <Message variant={'info'}>Please Login <Link to='/login'> login</Link> to write a review </Message>
+                      )}
+                    </ListGroup.Item>
+                      
+                  </ListGroup>
+              </Col>
+            </Row>
+          </div>
           )
         
         }    
