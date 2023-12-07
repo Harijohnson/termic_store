@@ -7,29 +7,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.decorators import api_view,permission_classes
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
-
-
-@api_view(['POST'])
-@permission_classes([IsAdminUser])
-def uploadImage(request):
-    data = request.data
-    # print('LOOK BELOW FOR DATA')
-    # print(data)
-    product_id = data['product_id']
-
-
-   
-
-    product = Product.objects.get(_id=product_id)
-
-
-    # Check if 'image' key exists in request.FILES
-    if 'image' in request.FILES:
-        product.image = request.FILES['image']
-        product.save()
-        return Response('Image was Uploaded')
-    else:
-        return Response('No image provided', status=400)
+from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 
 
 
@@ -43,9 +21,60 @@ def uploadImage(request):
 
 @api_view(['GET'])
 def getProducts(request):
-    products = Product.objects.all()
+    query = request.query_params.get('keyword')
+
+
+    if query  == None:
+        query=""
+    
+
+
+    products = Product.objects.filter(name__icontains=query)  #if the name of the product contains any values in side of the query  filter it and return it back
+    
+    
+    page = request.query_params.get('page')
+    paginator = Paginator(products,5)  # this Paginatow will decide how many product are in one page second parameter is the thing will have to set 
+
+
+
+    try:
+        products = paginator.page(page)
+
+    except PageNotAnInteger:
+        products =  paginator.page(1)
+    
+    
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
+    
+    if page == None:
+        page=1
+
+    page = int(page)
+    
+    serializer = ProductSerializer(products,many =  True)
+    return Response({'products':serializer.data,'page':page,'pages':paginator.num_pages})
+
+
+
+
+@api_view(['GET'])
+def getTopProducts(request):
+
+    products = Product.objects.filter(ratings__gte=4).order_by('-ratings')[0:5] 
     serializer = ProductSerializer(products,many =  True)
     return Response(serializer.data)
+
+
+    
+
+
+
+
+
+
+
+
 
 
 
@@ -114,6 +143,33 @@ def deleteProduct(request,pk):
 
 
 
+@api_view(['POST'])
+@permission_classes([IsAdminUser])
+def uploadImage(request):
+    data = request.data
+    # print('LOOK BELOW FOR DATA')
+    # print(data)
+    product_id = data['product_id']
+
+
+   
+
+    product = Product.objects.get(_id=product_id)
+
+
+    # Check if 'image' key exists in request.FILES
+    if 'image' in request.FILES:
+        product.image = request.FILES['image']
+        product.save()
+        return Response('Image was Uploaded')
+    else:
+        return Response('No image provided', status=400)
+
+
+
+
+
+
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -163,3 +219,7 @@ def createProductReview(request,pk):
         product.save()
 
         return Response('Review is Added')
+    
+
+
+
