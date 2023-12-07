@@ -7,7 +7,7 @@ import  Loader   from '../components/Loader'
 import  Message   from '../components/Message'
 import { useLocation } from 'react-router-dom';  // Import useLocation
 import Paginate from '../components/Paginate'
-
+import ProductCarousel from '../components/ProductCarousel'
 
 
 
@@ -31,6 +31,7 @@ function HomeScreen() {
 
   return (
     <div>
+      { !keyword && <ProductCarousel /> }
       <h1>Latest Produtcts</h1>
       {
         loading ? <Loader /> 
