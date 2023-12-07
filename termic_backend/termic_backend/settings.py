@@ -17,8 +17,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 BASE_DIR2 = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) # change directory to main folders
 
+BASE_DIR3 = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) # change directory to main folders
 
-STATIC_DIR = os.path.join(BASE_DIR2,'static') # locate the static file like image and js and css file and images for project
+
+# print('look below')
+# print('directry is  ' , os.path.join(BASE_DIR,'termic_shop/build/static'))
+# TEMPLATES_DIR =  os.path.join(BASE_DIR,'termic_shop/build')
+TEMPLATES_DIR = os.path.join(BASE_DIR, 'termic_shop/build')
+
+# STATIC_DIR = os.path.join(BASE_DIR2,'static') # locate the static file like image and js and css file and images for project
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -126,7 +135,9 @@ ROOT_URLCONF = 'termic_backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+           TEMPLATES_DIR,
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -201,16 +212,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/' # this is a folder to stores  static file for project inetilation
-MEDIA_URL = 'images/' # this folder stores images for frontend to render
+STATIC_URL = '/static/' # this is a folder to stores  static file for project inetilation
+MEDIA_URL = '/images/' # this folder stores images for frontend to render
 
-STATICFILES_DIR =[
-    STATIC_DIR,  # inherited from static files
+STATICFILES_DIRS =[
+    BASE_DIR / 'base/static',  # inherited from static files
+    BASE_DIR / 'termic_shop/build/static',
 ]
 
-
-MEDIA_ROOT = os.path.join(BASE_DIR2, 'base/static/images') # this for set the images
-
+print('static file dir is  : ' ,STATICFILES_DIRS)
+MEDIA_ROOT = os.path.join(BASE_DIR, 'base/static/images' )# this for set the images
+print('media root dir i s :',MEDIA_ROOT)
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
