@@ -37,7 +37,7 @@ SECRET_KEY = 'django-insecure-iy#in_a@gd+4yx_f_k#-0bie_xg&zh8ev0t774g1w=@vgor$hj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1','localhost']
 
 
 # Application definition
@@ -114,7 +114,8 @@ SIMPLE_JWT = {
 MIDDLEWARE = [
      # new install 
     "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware",
+    # "django.middleware.common.CommonMiddleware",
+     "whitenoise.middleware.WhiteNoiseMiddleware",
 
 
     #default imports
@@ -243,18 +244,20 @@ STATICFILES_DIRS =[
     BASE_DIR / 'termic_shop/build/static',
 ]
 
-print('static file dir is  : ' ,STATICFILES_DIRS)
+# print('static file dir is  : ' ,STATICFILES_DIRS)
 MEDIA_ROOT = os.path.join(BASE_DIR, 'base/static/images' )# this for set the images
-print('media root dir i s :',MEDIA_ROOT)
+# print('media root dir i s :',MEDIA_ROOT)
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-
+STATIC_ROOT = BASE_DIR / 'staticfiles' 
 # allow the react ot access the urls in django
 CORS_ALLOW_ALL_ORIGINS = True
 
 
 
+if os.getcwd() == "/app":
+    DEBUG = False
