@@ -43,17 +43,17 @@ clone this repo create branch and add commits
 
 install requirements by
 
-python -m pip install requirements.txt
+```python -m pip install requirements.txt```
 
 change directory to
 
-CD proshop_djngo
+```CD proshop_djngo```
 
 
-CD termic_backend
+```CD termic_backend```
 
 
-make migration on db
+```make migration on db```
 
 python manage.py makemigrations
 
