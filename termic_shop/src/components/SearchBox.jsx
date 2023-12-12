@@ -27,7 +27,7 @@ function SearchBox() {
       type='text'
       name = 'q'
       onChange={(e)=>setKeyword(e.target.value)}
-      className='mr-sm-9 ml-sm-10'
+      className='me-sm-6 ms-sm-15'
       ></Form.Control>
 
 
