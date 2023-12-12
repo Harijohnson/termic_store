@@ -69,3 +69,7 @@ python manage.py runserver
 
 open admin page and view the models 
 
+
+
+
+hostingrender.com
