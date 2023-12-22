@@ -73,3 +73,6 @@ open admin page and view the models
 
 
 hostingrender.com
+
+
+getting new bugs
